@@ -168,7 +168,7 @@
             </div>
           </div>
           <div class="card-footer">
-            <marquee behavior="" direction=""> Technical Support : Eng. Rezaur Rahman </marquee>
+            <marquee behavior="" direction=""> Technical Support : Eng. Rejaur Rahman </marquee>
           </div>
         </div>
       </div>
