@@ -4,7 +4,9 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
-            <h1>Covid 19 Bangladesh</h1>
+            <marquee behavior="" direction="">
+              <h1>কভিড ১৯ বাংলাদেশ</h1>
+            </marquee>
           </div>
           <div class="card-body">
             <div class="card">
@@ -107,15 +109,17 @@
     </div>
 
 
-    <div class="row d-flex">
+    <div class="row">
       <div class="col-lg-12">
-        <div class="card text-center">
+        <div class="card">
           <div class="card-header">
-
+            <marquee behavior="" direction="">
+              <h1> অঞ্চলভিত্তিক তথ্য </h1>
+            </marquee>
           </div>
           <div class="card-body">
-            <div class="row text-center">
-              <h1> Division wise information </h1>
+            <div class="row">
+
               <div class="table-responsive">
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                   <thead>
@@ -129,7 +133,8 @@
                   </thead>
                   <tbody>
                     <tr v-for="(district,index) in districts" :key="index">
-                      <td>{{index}}</td>
+                      <td>{{index+page_count+1}}</td>
+                      <!-- <td>{{((index+1) - 1) * page}}</td> -->
                       <td>{{district.name}}</td>
                       <td>{{district.tested}}</td>
                       <td>{{district.confirmed}}</td>
@@ -150,9 +155,11 @@
                   <ul class="pagination">
                     <li class="page-item"><a class="page-link" href="javascript:void(0)"
                         @click="get_districts(current_page+1)"> Next</a></li>
+
                     <li v-for="(p_no,index) in Math.ceil(districts_all.length/10)" :key="index"
                       v-bind:class="{'page-item':true, 'active':(p_no === current_page)}"><a class="page-link "
                         href="javascript:void(0)" @click="get_districts(p_no)">{{p_no}}</a></li>
+
                     <li class="page-item"><a class="page-link" href="javascript:void(0)"
                         @click="get_districts(current_page-1)">Previous</a></li>
                   </ul>
@@ -168,7 +175,8 @@
             </div>
           </div>
           <div class="card-footer">
-            <marquee behavior="" direction=""> Technical Support : Eng. Rejaur Rahman </marquee>
+            <span class="float-center text-muted">Copyright &copy; <i><b>azam hossen</b></i></span>
+            <marquee behavior="" direction=""> কারিগরি সহায়তা : ইঞ্জিনিয়ার রেজাউর রহমান </marquee>
           </div>
         </div>
       </div>
@@ -204,9 +212,9 @@
         new_recovered: null,
         districts: [],
         districts_all: [],
-        page: 10,
+        // page: 10,
         current_page: null,
-        active_class: 'page-item active'
+        page_count: 1
 
 
       }
@@ -245,9 +253,10 @@
 
       get_districts(page_no) {
         this.current_page = page_no;
-        var start = (page_no - 1) * this.page;
+        var start = (page_no - 1) * 10;
         var end = start + 10;
         this.districts = this.districts_all.slice(start, end);
+        this.page_count = (page_no - 1) * 10;
       }
     }
 
