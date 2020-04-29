@@ -167,6 +167,9 @@
               </div>
             </div>
           </div>
+          <div class="card-footer">
+            <marquee behavior="" direction=""> Technical Support : Eng. Rezaur Rahman </marquee>
+          </div>
         </div>
       </div>
     </div>
