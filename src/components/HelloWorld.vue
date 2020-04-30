@@ -153,15 +153,15 @@
                 </table>
                 <nav aria-label="Page navigation example">
                   <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                        @click="get_districts(current_page+1)"> Next</a></li>
+
+                    <li class="page-item"><a v-show="current_page != 1" class="page-link" href="javascript:void(0)"
+                        @click="get_districts(current_page-1)">Previous</a></li>
 
                     <li v-for="(p_no,index) in Math.ceil(districts_all.length/10)" :key="index"
                       v-bind:class="{'page-item':true, 'active':(p_no === current_page)}"><a class="page-link "
                         href="javascript:void(0)" @click="get_districts(p_no)">{{p_no}}</a></li>
-
-                    <li class="page-item"><a class="page-link" href="javascript:void(0)"
-                        @click="get_districts(current_page-1)">Previous</a></li>
+                    <li class="page-item"><a v-show="current_page != total_page_number" class="page-link" href="javascript:void(0)"
+                        @click="get_districts(current_page+1)"> Next</a></li>
                   </ul>
                 </nav>
 
@@ -214,7 +214,8 @@
         districts_all: [],
         // page: 10,
         current_page: null,
-        page_count: 1
+        page_count: 1,
+        total_page_number : null
 
 
       }
@@ -236,6 +237,7 @@
           // this.districts = this.districts_all.slice(0,9);
           // console.log(this.dis);
           this.get_districts(1);
+          
         });
 
       // this.todo();
@@ -257,6 +259,9 @@
         var end = start + 10;
         this.districts = this.districts_all.slice(start, end);
         this.page_count = (page_no - 1) * 10;
+        this.total_page_number = Math.ceil(this.districts_all.length/10);
+        console.log(this.total_page_number);
+        
       }
     }
 
