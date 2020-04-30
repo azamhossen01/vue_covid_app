@@ -224,7 +224,7 @@
     created() {
       axios.get('https://fastaar.com/api')
         .then((res) => {
-          console.log(res.data.districts);
+          console.log(res.data);
           this.total_confirmed = res.data.total.confirmed;
           this.total_deaths = res.data.total.deaths;
           this.total_tested = res.data.total.tested;
@@ -232,7 +232,7 @@
           this.new_confirmed = res.data.new.confirmed;
           this.new_deaths = res.data.new.deaths;
           this.new_tested = res.data.new.tested;
-          this.new_recovered = res.data.total.recovered;
+          this.new_recovered = res.data.new.recovered;
           this.districts_all = res.data.districts;
           // this.districts = this.districts_all.slice(0,9);
           // console.log(this.dis);
