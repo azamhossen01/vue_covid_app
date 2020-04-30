@@ -126,9 +126,9 @@
                     <tr>
                       <th>#SL</th>
                       <th>Name</th>
-                      <th>Tested</th>
                       <th>Confirmed</th>
                       <th>Recovered</th>
+                      <th>Deaths</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -136,18 +136,18 @@
                       <td>{{index+page_count+1}}</td>
                       <!-- <td>{{((index+1) - 1) * page}}</td> -->
                       <td>{{district.name}}</td>
-                      <td>{{district.tested}}</td>
                       <td>{{district.confirmed}}</td>
                       <td>{{district.recovered}}</td>
+                      <td>{{district.deaths}}</td>
                     </tr>
                   </tbody>
                   <tfoot>
                     <tr>
                       <th>#SL</th>
                       <th>Name</th>
-                      <th>Tested</th>
                       <th>Confirmed</th>
                       <th>Recovered</th>
+                      <th>Deaths</th>
                     </tr>
                   </tfoot>
                 </table>
