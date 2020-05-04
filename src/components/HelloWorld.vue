@@ -15,11 +15,11 @@
                 <div class="col-lg-3 col-md-6 mb-4">
                   <div class="card h-100">
 
-                    <div class="card-body text-danger">
+                    <div class="card-body text-info">
                       <h4 class="card-title">মোট আক্রান্ত</h4>
                       <h4 class="card-text">{{total_confirmed}}</h4>
                     </div>
-                    <div class="card-footer bg-danger"></div>
+                    <div class="card-footer bg-info"></div>
                   </div>
                 </div>
 
@@ -62,7 +62,7 @@
 
                     <div class="card-body text-danger">
                       <h4 class="card-title">নতুন আক্রান্ত</h4>
-                      <h4 class="card-text">{{new_confirmed}}</h4>
+                      <h4 class="card-text">{{last_confirmed}}</h4>
                     </div>
                     <div class="card-footer bg-danger"></div>
                   </div>
@@ -73,7 +73,7 @@
 
                     <div class="card-body text-danger">
                       <h4 class="card-title">নতুন সুস্থ</h4>
-                      <h4 class="card-text">{{new_recovered}}</h4>
+                      <h4 class="card-text">{{last_recovered}}</h4>
                     </div>
                     <div class="card-footer bg-danger"></div>
                   </div>
@@ -84,7 +84,7 @@
 
                     <div class="card-body text-danger">
                       <h4 class="card-title">নতুন মৃত্যু</h4>
-                      <h4 class="card-text">{{new_deaths}}</h4>
+                      <h4 class="card-text">{{last_deaths}}</h4>
                     </div>
                     <div class="card-footer bg-danger"></div>
                   </div>
@@ -95,7 +95,7 @@
 
                     <div class="card-body text-danger">
                       <h4 class="card-title">নতুন নমুনা পরীক্ষা</h4>
-                      <h4 class="card-text">{{new_tested}}</h4>
+                      <h4 class="card-text">{{last_tested}}</h4>
                     </div>
                     <div class="card-footer bg-danger"></div>
                   </div>
@@ -121,6 +121,7 @@
             <div class="row">
 
               <div class="table-responsive">
+                <!-- <input type="text" class="form-control" v-model="search" placeholder="Search district name"> -->
                 <table id="example" class="table table-striped table-bordered" style="width:100%">
                   <thead>
                     <tr>
@@ -132,7 +133,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(district,index) in districts" :key="index">
+                    <tr v-for="(district,index) in searchDistrict" :key="index">
                       <td>{{index+page_count+1}}</td>
                       <!-- <td>{{((index+1) - 1) * page}}</td> -->
                       <td>{{district.name}}</td>
@@ -166,17 +167,28 @@
                 </nav>
 
 
-
-
-
-
-
               </div>
             </div>
           </div>
           <div class="card-footer">
             <span class="float-center text-muted">Copyright &copy; <i><b>azam hossen</b></i></span>
             <marquee behavior="" direction=""> কারিগরি সহায়তা : ইঞ্জিনিয়ার রেজাউর রহমান </marquee>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+            Chart
+          </div>
+          <div class="card-body">
+            <!-- <line-chart :data="getData"></line-chart> -->
+            <pie-chart :data="pie"></pie-chart>
+            <column-chart  :colors="['green', 'green','blue']"  :data="pie"></column-chart>
           </div>
         </div>
       </div>
@@ -200,59 +212,70 @@
     },
     data() {
       return {
+        getData : {
+          '12-2-2020':2,
+          '13-3-2020':3,
+          '14-4-2020':4,
+        },
         colors: ['#1abc9c', '#e74c3c', '#8e44ad', '#2ecc71', '#3498db', '#f1c40f', '#c0392b', '#95a5a6'],
+        pie : [],
         count: 0,
         total_confirmed: null,
         total_deaths: null,
         total_tested: null,
         total_recovered: null,
-        new_confirmed: null,
-        new_deaths: null,
-        new_tested: null,
-        new_recovered: null,
+        last_confirmed: null,
+        last_deaths: null,
+        last_tested: null,
+        last_recovered: null,
         districts: [],
         districts_all: [],
         // page: 10,
         current_page: null,
         page_count: 1,
-        total_page_number : null
+        total_page_number : null,
+        search : ""
 
 
       }
 
     },
+    computed : {
+      
+      searchDistrict(){
+        return this.districts.filter((district)=>{
+          return  district.name.match(this.search);
+        });
+      }
+    },
     created() {
-      axios.get('https://fastaar.com/api')
+      axios.get('https://corona.in.com.bd/api/districts')
         .then((res) => {
-          console.log(res.data);
-          this.total_confirmed = res.data.total.confirmed;
-          this.total_deaths = res.data.total.deaths;
-          this.total_tested = res.data.total.tested;
-          this.total_recovered = res.data.total.recovered;
-          this.new_confirmed = res.data.new.confirmed;
-          this.new_deaths = res.data.new.deaths;
-          this.new_tested = res.data.new.tested;
-          this.new_recovered = res.data.new.recovered;
-          this.districts_all = res.data.districts;
-          // this.districts = this.districts_all.slice(0,9);
-          // console.log(this.dis);
+          console.log(res.data.data);
+          this.districts_all = res.data.data;
           this.get_districts(1);
           
         });
+        axios.get('https://corona.in.com.bd/api/stats')
+        .then((res)=>{
+           this.total_confirmed = res.data.total.confirmed;
+          this.total_deaths = res.data.total.deaths;
+          this.total_tested = res.data.total.tested;
+          this.total_recovered = res.data.total.recovered;
+           this.last_confirmed = res.data.last.confirmed;
+          this.last_deaths = res.data.last.deaths;
+          this.last_tested = res.data.last.tested;
+          this.last_recovered = res.data.last.recovered;
+           this.pie_chart_data();
+        });
 
       // this.todo();
+     
 
     },
     methods: {
-      // todo: function () {
-      //   this.intervalid1 = setInterval(() => {
-      //     // this.changes = ((Math.random() * 100).toFixed(2))+'%';
-      //     // console.log (this.changes);
-      //     document.getElementById('hello').style.background = this.colors[this.count % 8];
-      //     this.count++;
-      //   }, 3000);
-      // }
-
+     
+      
       get_districts(page_no) {
         this.current_page = page_no;
         var start = (page_no - 1) * 10;
@@ -260,9 +283,21 @@
         this.districts = this.districts_all.slice(start, end);
         this.page_count = (page_no - 1) * 10;
         this.total_page_number = Math.ceil(this.districts_all.length/10);
-        console.log(this.total_page_number);
         
-      }
+      },
+      pie_chart_data(){
+        // return this.pie;
+      // console.log(this.total_confirmed);
+
+         this.pie = [
+           ['confirmed',Math.round((this.total_confirmed/(this.total_tested))*100)],
+           ['recovered',Math.round((this.total_recovered/(this.total_tested))*100)],
+           ['deaths',Math.round((this.total_deaths/(this.total_tested))*100)],
+          //  ['tested',Math.round((this.total_tested/(this.total_tested))*100)],
+           
+         ];
+         console.log(this.pie);
+      },
     }
 
 
