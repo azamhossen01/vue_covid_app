@@ -183,12 +183,25 @@
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
-            Chart
+            লিঙ্গভিত্তিক কভিড আক্রান্ত
           </div>
           <div class="card-body">
             <!-- <line-chart :data="getData"></line-chart> -->
             <pie-chart :data="pie"></pie-chart>
-            <column-chart  :colors="['green', 'green','blue']"  :data="pie"></column-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-header">
+           বয়সভিত্তিক কভিড আক্রান্ত
+          </div>
+          <div class="card-body">
+            <!-- <line-chart :data="getData"></line-chart> -->
+            <column-chart  :colors='["#63b598", "#ce7d78", "#ea9e70", "#a48a9e", "#c6e1e8", "#c6e1e8", "#c6e1e8"]'  :data="ages"></column-chart>
           </div>
         </div>
       </div>
@@ -217,8 +230,9 @@
           '13-3-2020':3,
           '14-4-2020':4,
         },
-        colors: ['#1abc9c', '#e74c3c', '#8e44ad', '#2ecc71', '#3498db', '#f1c40f', '#c0392b', '#95a5a6'],
+        // colors: ['#1abc9c', '#e74c3c', '#8e44ad', '#2ecc71', '#3498db', '#f1c40f', '#c0392b', '#95a5a6'],
         pie : [],
+        column : [],
         count: 0,
         total_confirmed: null,
         total_deaths: null,
@@ -230,6 +244,19 @@
         last_recovered: null,
         districts: [],
         districts_all: [],
+        gender : {
+          male : 0,
+          female : 0
+        },
+        ages : {
+          "0-10" : 0,
+          "11-20" : 0,
+          "21-30" : 0,
+          "31-40" : 0,
+          "41-50" : 0,
+          "51-60" : 0,
+          "60+" : 0
+        },
         // page: 10,
         current_page: null,
         page_count: 1,
@@ -249,6 +276,7 @@
       }
     },
     created() {
+      console.log(this.ages["0-10"]);
       axios.get('https://corona.in.com.bd/api/districts')
         .then((res) => {
           console.log(res.data.data);
@@ -266,7 +294,28 @@
           this.last_deaths = res.data.last.deaths;
           this.last_tested = res.data.last.tested;
           this.last_recovered = res.data.last.recovered;
-           this.pie_chart_data();
+           
+        });
+
+        axios.get('https://corona.in.com.bd/api/genders')
+        .then((res)=>{
+          console.log(res.data.data);
+          this.gender.male = res.data.data.male.confirmed;
+          this.gender.female = res.data.data.female.confirmed;
+          this.pie_chart_data();
+        });
+
+        axios.get("https://corona.in.com.bd/api/ages")
+        .then((res)=>{
+          // console.log(res.data.data);
+          this.ages["0-10"] = res.data.data.onetoten.confirmed;
+          this.ages["11-20"] = res.data.data.eleventotwenty.confirmed;
+          this.ages["21-30"] = res.data.data.twentyonetothirty.confirmed;
+          this.ages["31-40"] = res.data.data.thirtyonetofourty.confirmed;
+          this.ages["41-50"] = res.data.data.fourtyonetofifty.confirmed;
+          this.ages["51-60"] = res.data.data.fiftyonetosixty.confirmed;
+          this.ages["60+"] = res.data.data.sixtyplus.confirmed;
+          console.log(this.ages);
         });
 
       // this.todo();
@@ -286,18 +335,16 @@
         
       },
       pie_chart_data(){
-        // return this.pie;
-      // console.log(this.total_confirmed);
-
          this.pie = [
-           ['confirmed',Math.round((this.total_confirmed/(this.total_tested))*100)],
-           ['recovered',Math.round((this.total_recovered/(this.total_tested))*100)],
-           ['deaths',Math.round((this.total_deaths/(this.total_tested))*100)],
-          //  ['tested',Math.round((this.total_tested/(this.total_tested))*100)],
-           
+          ['male',this.gender.male],
+          ['female',this.gender.female],
          ];
-         console.log(this.pie);
       },
+      column_cart_data(){
+        this.column = [
+
+        ];
+      }
     }
 
 
