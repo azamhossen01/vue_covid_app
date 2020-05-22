@@ -179,33 +179,31 @@
     </div>
 
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
             লিঙ্গভিত্তিক কভিড আক্রান্ত
           </div>
           <div class="card-body">
-            <!-- <line-chart :data="getData"></line-chart> -->
             <pie-chart :data="pie"></pie-chart>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-12">
         <div class="card">
           <div class="card-header">
            বয়সভিত্তিক কভিড আক্রান্ত
           </div>
           <div class="card-body">
-            <!-- <line-chart :data="getData"></line-chart> -->
             <column-chart  :colors='["#63b598", "#ce7d78", "#ea9e70", "#a48a9e", "#c6e1e8", "#c6e1e8", "#c6e1e8"]'  :data="ages"></column-chart>
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
 
 
